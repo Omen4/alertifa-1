@@ -46,5 +46,5 @@ for logger_name in LOGGERS:
     logging_logger.handlers = [InterceptHandler(level=LOGGING_LEVEL)]
 
 
-logger.configure(handlers=[{"sink": "./logs.txt", "level": LOGGING_LEVEL}])
+logger.configure(handlers=[{"sink": "/logs/app.log", "level": LOGGING_LEVEL}])
 # logger.configure(handlers=[{"sink": sys.stderr, "level": LOGGING_LEVEL}])

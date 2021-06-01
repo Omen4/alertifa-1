@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import requests
-import subprocess
-from pathlib import Path
-import asyncio
+import socket
+import sys
+# import subprocess
+# from pathlib import Path
 
 
 SUCCESS = "\033[32;1;1mSUCCESS\033[0m"
@@ -12,7 +13,8 @@ FAILED = "\033[31;1;1mFAILED\033[0m"
 # BASE_URL = "https://ascript-valency.com/api"
 # BASE_URL = "https://kubernetes.docker.internal/api"
 requests.packages.urllib3.disable_warnings()
-BASE_URL = "https://nginx/api"
+host = socket.gethostbyname("nginx")
+BASE_URL = f"https://{host}/api"
 # fake_cert = Path(__file__).parent.parent / "nginx" / "letsencrypt" / "nginx-selfsigned.crt"
 # print(fake_cert)
 
