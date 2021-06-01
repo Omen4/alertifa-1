@@ -22,8 +22,8 @@ services:
         build: ./database/.
         volumes:
             - ./database/pgdata:/var/lib/postgresql/pgdata:rw
-            - ./database/postgresql.conf:/var/lib/postgresql/pgdata/postgresql.conf:ro
-            - ./database/pg_hba.conf:/var/lib/postgresql/pgdata/pg_hba.conf:ro
+            - ./database/postgresql.conf:/var/lib/postgresql/pgdata/postgresql.conf:rw
+            - ./database/pg_hba.conf:/var/lib/postgresql/pgdata/pg_hba.conf:rw
             - ./logs/database:/var/lib/postgresql/data:rw
         env_file:
             - ./database/.env
