@@ -7,3 +7,4 @@ pgdata/
 .stfolder/
 _dependencies
 .stignore
+logs/
