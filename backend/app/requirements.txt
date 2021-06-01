@@ -1,0 +1,12 @@
+asyncpg==0.22.0
+fastapi==0.65.1
+loguru==0.5.3
+aiosql==3.2.0
+starlette==0.14.2
+uvicorn==0.13.4
+pydantic==1.8.2
+pyjwt==2.1.0
+databases==0.2.2
+email-validator==1.1.2
+passlib==1.7.4
+bcrypt==3.2.0

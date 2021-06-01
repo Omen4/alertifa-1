@@ -1,0 +1,75 @@
+*mangle
+:PREROUTING ACCEPT [0:0]
+
+-A PREROUTING -m conntrack --ctstate INVALID -j DROP
+-A PREROUTING -p tcp ! --syn -m conntrack --ctstate NEW -j DROP
+-A PREROUTING -p tcp -m conntrack --ctstate NEW -m tcpmss ! --mss 536:65535 -j DROP
+-A PREROUTING -p tcp --tcp-flags FIN,SYN,RST,PSH,ACK,URG NONE -j DROP
+-A PREROUTING -p tcp --tcp-flags FIN,SYN FIN,SYN -j DROP
+-A PREROUTING -p tcp --tcp-flags SYN,RST SYN,RST -j DROP
+-A PREROUTING -p tcp --tcp-flags FIN,RST FIN,RST -j DROP
+-A PREROUTING -p tcp --tcp-flags FIN,ACK FIN -j DROP
+-A PREROUTING -p tcp --tcp-flags ACK,URG URG -j DROP
+-A PREROUTING -p tcp --tcp-flags ACK,FIN FIN -j DROP
+-A PREROUTING -p tcp --tcp-flags ACK,PSH PSH -j DROP
+-A PREROUTING -p tcp --tcp-flags ALL ALL -j DROP
+-A PREROUTING -p tcp --tcp-flags ALL NONE -j DROP
+-A PREROUTING -p tcp --tcp-flags ALL FIN,PSH,URG -j DROP
+-A PREROUTING -p tcp --tcp-flags ALL SYN,FIN,PSH,URG -j DROP
+-A PREROUTING -p tcp --tcp-flags ALL SYN,RST,ACK,FIN,URG -j DROP
+
+-A PREROUTING -s 224.0.0.0/3 -j DROP
+-A PREROUTING -s 169.254.0.0/16 -j DROP
+-A PREROUTING -s 172.16.0.0/12 -j DROP
+-A PREROUTING -s 192.0.2.0/24 -j DROP
+-A PREROUTING -s 192.168.0.0/16 -j DROP
+-A PREROUTING -s 10.0.0.0/8 -j DROP
+-A PREROUTING -s 0.0.0.0/8 -j DROP
+-A PREROUTING -s 240.0.0.0/5 -j DROP
+-A PREROUTING -s 127.0.0.0/8 ! -i lo -j DROP
+-A PREROUTING -p icmp -j DROP
+-A PREROUTING -f -j DROP
+
+COMMIT
+
+
+*filter
+:INPUT DROP [0:0]
+:OUTPUT DROP [0:0]
+:FORWARD DROP [0:0]
+
+# General
+-A INPUT -p tcp -m connlimit --connlimit-above 80 -j REJECT --reject-with tcp-reset
+-A INPUT -p tcp --dport 2221 -i eth0 -m state --state NEW -m recent --set
+-A INPUT -p tcp --dport 2221 -i eth0 -m state --state NEW -m recent  --update --seconds 60 --hitcount 4 -j DROP
+-A INPUT -m state --state RELATED,ESTABLISHED -j ACCEPT
+-A OUTPUT -m conntrack --ctstate ESTABLISHED -j ACCEPT
+
+# SSH, DNS, HTTP, HTTPS - ALL
+-A INPUT -i eth0 -s 79.83.164.31 -p tcp --dport 2221 -j ACCEPT
+-A OUTPUT -o eth0 -d 79.83.164.31 -p tcp --sport 2221 -j ACCEPT
+-A OUTPUT -o eth0 -p udp --dport 53 -j ACCEPT
+-A INPUT -i eth0 -p udp --sport 53 -j ACCEPT
+
+# Syncthing - ALL
+-A INPUT -i eth0 -p tcp --sport 22000: --dport 22000: -j ACCEPT
+-A INPUT -i eth0 -p tcp --dport 8384 -j ACCEPT
+-A OUTPUT -o eth0 -p tcp --sport 8384 -j ACCEPT
+-A OUTPUT -o eth0 -p tcp --sport 22000: --dport 22000: -j ACCEPT
+
+# Stack Backend Alertifa
+-A INPUT -i lo -p tcp --sport 443: --dport 8080: -j ACCEPT
+-A OUTPUT -o lo -p tcp --sport 8080: --dport 443: -j ACCEPT
+-A INPUT -i lo -p tcp --sport 8080: --dport 5432: -j ACCEPT
+-A OUTPUT -o lo -p tcp --sport 5432: --dport 8080: -j ACCEPT
+
+-A INPUT -i eth0 -p tcp --sport 443: --dport 443: -j ACCEPT
+-A OUTPUT -o eth0 -p tcp --sport 443: --dport 443: -j ACCEPT
+-A INPUT -i eth0 -p tcp --sport 80: --dport 80: -j ACCEPT
+-A OUTPUT -o eth0 -p tcp --sport 80: --dport 80: -j ACCEPT
+
+-A INPUT -j DROP
+-A OUTPUT -j DROP
+-A FORWARD -j DROP
+
+COMMIT

@@ -1,0 +1,78 @@
+version: '3.7'
+services:
+    nginx:
+        build: ./nginx/.
+        container_name: nginx
+        volumes:
+            - ./nginx/letsencrypt/:/etc/letsencrypt
+            - ./logs/nginx/:/var/log/nginx/
+        ports:
+            - "80:80"
+            - "443:443"
+        networks: 
+            - frontend
+            - backend
+        depends_on: 
+            - python
+    postgres:
+        container_name: db
+        build: ./database/.
+        ports:
+            - "5432:5432"
+        volumes:
+            - ./database/pgdata:/var/lib/postgresql/pgdata:rw
+            - ./database/postgresql.conf:/var/lib/postgresql/pgdata/postgresql.conf:rw
+            - ./database/pg_hba.conf:/var/lib/postgresql/pgdata/pg_hba.conf:rw
+            - ./logs/database:/var/lib/postgresql/data:rw
+        environment:
+            - POSTGRES_PASSWORD=UmptKgehOxrO
+            - PGDATA=/var/lib/postgresql/pgdata
+        networks:
+            - backend
+    db_init:
+        container_name: db_init
+        build: ./database_init/.
+        networks: 
+            - backend
+        depends_on: 
+            - postgres
+    db_populate:
+        container_name: db_populate
+        build: ./database_populate/.
+        networks: 
+            - backend
+        depends_on: 
+            - db_init
+    python:
+        container_name: fastapi
+        build: ./app/.
+        ports:
+            - "8080:8080"
+        volumes:
+            - ./logs/backend/:/logs
+        networks: 
+            - backend
+        depends_on:
+            - db_populate
+
+    unit_test_account:
+        container_name: unit_test_account
+        build: ./unit_test/account/.
+        networks: 
+            - frontend
+        depends_on:
+            - nginx
+    unit_test_permissions:
+        container_name: unit_test_permissions
+        build: ./unit_test/permissions/.
+        networks: 
+            - frontend
+            - backend
+        depends_on: 
+            - unit_test_account
+        
+networks:
+    backend:
+        name: backend
+    frontend:
+        name: frontend
