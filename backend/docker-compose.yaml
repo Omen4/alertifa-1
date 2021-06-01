@@ -21,8 +21,8 @@ services:
             - "5432:5432"
         volumes:
             - ./database/pgdata:/var/lib/postgresql/pgdata:rw
-            - ./database/postgresql.conf:/var/lib/postgresql/pgdata/postgresql.conf:rw
-            - ./database/pg_hba.conf:/var/lib/postgresql/pgdata/pg_hba.conf:rw
+            - ./database/postgresql.conf:/etc/postgresql/postgresql.conf:ro
+            - ./database/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
             - ./logs/database:/var/lib/postgresql/data:rw
         environment:
             - POSTGRES_PASSWORD=UmptKgehOxrO
@@ -76,3 +76,7 @@ networks:
         name: backend
     frontend:
         name: frontend
+
+volumes:
+    db-data: 
+        driver: local
