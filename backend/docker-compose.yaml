@@ -4,55 +4,62 @@ services:
         build: ./nginx/.
         container_name: nginx
         volumes:
-            - ./nginx/letsencrypt/:/etc/letsencrypt
-            - ./logs/nginx/:/var/log/nginx/
+            - ./nginx/letsencrypt:/etc/letsencrypt:ro
+            - ./logs/nginx:/var/log/nginx:rw
         ports:
-            - "80:80"
-            - "443:443"
+            - "127.0.0.1:80:80"
+            - "127.0.0.1:443:443"
+            # - "80:80"
+            # - "443:443"
         networks: 
             - frontend
             - backend
         depends_on: 
             - python
+
     postgres:
         container_name: db
         build: ./database/.
-        ports:
-            - "5432:5432"
         volumes:
             - ./database/pgdata:/var/lib/postgresql/pgdata:rw
             - ./database/postgresql.conf:/etc/postgresql/postgresql.conf:ro
             - ./database/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
             - ./logs/database:/var/lib/postgresql/data:rw
-        environment:
-            - POSTGRES_PASSWORD=UmptKgehOxrO
-            - PGDATA=/var/lib/postgresql/pgdata
+        env_file:
+            - ./database/.env
+        # environment:
+        #     - POSTGRES_PASSWORD=UmptKgehOxrO
+        #     - PGDATA=/var/lib/postgresql/pgdata
         networks:
-            - backend
+            - dbnet
+
     db_init:
         container_name: db_init
         build: ./database_init/.
         networks: 
-            - backend
+            - dbnet
         depends_on: 
             - postgres
     db_populate:
         container_name: db_populate
         build: ./database_populate/.
         networks: 
-            - backend
+            - dbnet
         depends_on: 
             - db_init
+
     python:
-        container_name: fastapi
+        container_name: app
         build: ./app/.
-        ports:
-            - "8080:8080"
+        env_file:
+            - ./app/.env
         volumes:
-            - ./logs/backend/:/logs
+            - ./logs:/logs:rw
         networks: 
             - backend
+            - dbnet
         depends_on:
+            # - postgres
             - db_populate
 
     unit_test_account:
@@ -60,6 +67,7 @@ services:
         build: ./unit_test/account/.
         networks: 
             - frontend
+            - backend
         depends_on:
             - nginx
     unit_test_permissions:
@@ -67,16 +75,18 @@ services:
         build: ./unit_test/permissions/.
         networks: 
             - frontend
-            - backend
+            - dbnet
         depends_on: 
             - unit_test_account
-        
+
 networks:
-    backend:
-        name: backend
     frontend:
         name: frontend
-
-volumes:
-    db-data: 
-        driver: local
+    backend:
+        name: backend
+    dbnet:
+        name: dbnet
+        ipam:
+            driver: default
+            config:
+              - subnet: "172.16.238.0/24"

@@ -4,7 +4,6 @@ RUN mkdir /src
 COPY account.py /src/account.py
 COPY requirements.txt /src/requirements.txt
 RUN pip3 install -r /src/requirements.txt
-# ADD _dependencies /usr/local/lib/python3.9/site-packages
 
 
 CMD ["python", "-u", "/src/account.py"]
