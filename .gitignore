@@ -8,3 +8,4 @@ pgdata/
 _dependencies
 .stignore
 logs/
+node_modules/
