@@ -6,5 +6,5 @@ COPY requirements.txt /src/requirements.txt
 RUN pip3 install -r /src/requirements.txt
 
 
-CMD ["uvicorn", "src.main:app", "--host", "app", "--port", "8080"]
+CMD ["uvicorn", "src.main:app", "--host", "alertifa_python", "--port", "8080"]
 # CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8080"]

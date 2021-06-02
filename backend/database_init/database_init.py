@@ -5,7 +5,7 @@ import asyncio
 import asyncpg
 
 
-HOST = 'db'
+HOST = 'alertifa_postgres'
 PORT = 5432
 USERNAME = "admin"
 PASSWORD = "iP}hg*$0tIX8"

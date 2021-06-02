@@ -870,3 +870,213 @@ asyncpg.exceptions.InvalidAuthorizationSpecificationError: no pg_hba.conf entry 
 2021-06-01 22:01:00.880 | INFO     | src.main:stop_app:44 - Connection closed
 2021-06-01 22:01:00.880 | INFO     | uvicorn.lifespan.on:shutdown:46 - Application shutdown complete.
 2021-06-01 22:01:00.881 | INFO     | uvicorn.server:serve:74 - Finished server process [1]
+2021-06-02 08:00:28.752 | INFO     | uvicorn.server:serve:64 - Started server process [1]
+2021-06-02 08:00:28.753 | INFO     | uvicorn.lifespan.on:startup:26 - Waiting for application startup.
+2021-06-02 08:00:28.754 | INFO     | src.main:start_app:30 - Connecting to database
+2021-06-02 08:00:28.809 | ERROR    | uvicorn.lifespan.on:send:89 - Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/starlette/routing.py", line 540, in lifespan
+    async for item in self.lifespan_context(app):
+  File "/usr/local/lib/python3.9/site-packages/starlette/routing.py", line 481, in default_lifespan
+    await self.startup()
+  File "/usr/local/lib/python3.9/site-packages/starlette/routing.py", line 516, in startup
+    await handler()
+  File "./src/main.py", line 31, in start_app
+    app.state.pool = await create_pool(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 407, in _async__init__
+    await self._initialize()
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 435, in _initialize
+    await first_ch.connect()
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 127, in connect
+    self._con = await self._pool._get_new_connection()
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 477, in _get_new_connection
+    con = await connection.connect(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connection.py", line 1980, in connect
+    return await connect_utils._connect(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connect_utils.py", line 677, in _connect
+    raise last_error
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connect_utils.py", line 661, in _connect
+    con = await _connect_addr(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connect_utils.py", line 634, in _connect_addr
+    tr, pr = await compat.wait_for(connector, timeout=timeout)
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/compat.py", line 103, in wait_for
+    return await asyncio.wait_for(fut, timeout)
+  File "/usr/local/lib/python3.9/asyncio/tasks.py", line 481, in wait_for
+    return fut.result()
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connect_utils.py", line 544, in _create_ssl_connection
+    tr, pr = await loop.create_connection(
+  File "/usr/local/lib/python3.9/asyncio/base_events.py", line 1017, in create_connection
+    infos = await self._ensure_resolved(
+  File "/usr/local/lib/python3.9/asyncio/base_events.py", line 1396, in _ensure_resolved
+    return await loop.getaddrinfo(host, port, family=family, type=type,
+  File "/usr/local/lib/python3.9/asyncio/base_events.py", line 856, in getaddrinfo
+    return await self.run_in_executor(
+  File "/usr/local/lib/python3.9/concurrent/futures/thread.py", line 52, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "/usr/local/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -2] Name or service not known
+
+2021-06-02 08:00:28.810 | ERROR    | uvicorn.lifespan.on:startup:35 - Application startup failed. Exiting.
+2021-06-02 09:43:51.220 | INFO     | uvicorn.server:serve:64 - Started server process [1]
+2021-06-02 09:43:51.222 | INFO     | uvicorn.lifespan.on:startup:26 - Waiting for application startup.
+2021-06-02 09:43:51.223 | INFO     | src.main:start_app:30 - Connecting to database
+2021-06-02 09:43:51.270 | INFO     | src.main:start_app:36 - Connection established
+2021-06-02 09:43:51.271 | INFO     | uvicorn.lifespan.on:startup:38 - Application startup complete.
+2021-06-02 09:43:51.273 | INFO     | uvicorn.server:_log_started_message:199 - Uvicorn running on http://app:8080 (Press CTRL+C to quit)
+2021-06-02 09:43:56.933 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40438 - "GET /api HTTP/1.0" 404
+2021-06-02 09:43:56.945 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40442 - "POST /api/auth HTTP/1.0" 422
+2021-06-02 09:43:56.953 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40444 - "POST /api/auth HTTP/1.0" 422
+2021-06-02 09:43:56.959 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40446 - "POST /api/auth HTTP/1.0" 422
+2021-06-02 09:43:57.219 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40448 - "POST /api/auth HTTP/1.0" 201
+2021-06-02 09:43:57.224 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40450 - "POST /api/auth HTTP/1.0" 400
+2021-06-02 09:43:57.231 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40452 - "POST /api/auth HTTP/1.0" 400
+2021-06-02 09:43:57.477 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40454 - "POST /api/auth/login HTTP/1.0" 400
+2021-06-02 09:43:57.483 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40456 - "POST /api/auth/login HTTP/1.0" 422
+2021-06-02 09:43:57.733 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40458 - "POST /api/auth/login HTTP/1.0" 400
+2021-06-02 09:43:57.981 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40460 - "POST /api/auth/login HTTP/1.0" 200
+2021-06-02 09:43:57.991 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40462 - "GET /api/channels/100000000000000000 HTTP/1.0" 200
+2021-06-02 09:43:57.999 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40464 - "GET /api/channels/100000000000000000 HTTP/1.0" 403
+2021-06-02 09:43:58.005 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40466 - "GET /api/channels/100000000000000000 HTTP/1.0" 403
+2021-06-02 09:43:58.010 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40468 - "GET /api/channels/100000000000000000 HTTP/1.0" 403
+2021-06-02 09:43:58.015 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40470 - "GET /api/channels/100000000000000000 HTTP/1.0" 403
+2021-06-02 09:43:58.020 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40472 - "GET /api/channels/100000000000000000 HTTP/1.0" 403
+2021-06-02 09:43:59.280 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40476 - "POST /api/auth/login HTTP/1.0" 200
+2021-06-02 09:43:59.501 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40478 - "POST /api/auth HTTP/1.0" 201
+2021-06-02 09:43:59.721 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40480 - "POST /api/auth HTTP/1.0" 201
+2021-06-02 09:43:59.942 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40482 - "POST /api/auth HTTP/1.0" 201
+2021-06-02 09:44:00.019 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40486 - "POST /api/messages/me/100000000000000000 HTTP/1.0" 201
+2021-06-02 09:44:00.028 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40488 - "POST /api/messages/me/100000000000000000 HTTP/1.0" 403
+2021-06-02 09:44:00.041 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40490 - "POST /api/messages/me/100000000000000000 HTTP/1.0" 422
+2021-06-02 09:44:00.052 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40492 - "POST /api/messages/me/100000000000000000 HTTP/1.0" 422
+2021-06-02 09:44:00.066 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40494 - "GET /api/messages/1 HTTP/1.0" 200
+2021-06-02 09:44:00.075 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40496 - "GET /api/messages/1 HTTP/1.0" 403
+2021-06-02 09:44:00.084 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40498 - "GET /api/messages/2 HTTP/1.0" 403
+2021-06-02 09:44:00.094 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40500 - "GET /api/messages/2 HTTP/1.0" 403
+2021-06-02 09:44:00.105 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40502 - "PATCH /api/messages/me/1 HTTP/1.0" 200
+2021-06-02 09:44:00.114 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40504 - "PATCH /api/messages/me/1 HTTP/1.0" 403
+2021-06-02 09:44:00.122 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40506 - "PATCH /api/messages/me/1 HTTP/1.0" 403
+2021-06-02 09:44:00.129 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40508 - "PATCH /api/messages/me/1 HTTP/1.0" 422
+2021-06-02 09:44:00.138 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40510 - "PATCH /api/messages/me/1 HTTP/1.0" 422
+2021-06-02 09:44:00.151 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40512 - "PATCH /api/messages/me/1 HTTP/1.0" 422
+2021-06-02 09:44:00.169 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40514 - "POST /api/messages/me/100000000000000000 HTTP/1.0" 201
+2021-06-02 09:44:00.185 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40516 - "DELETE /api/messages/me/2 HTTP/1.0" 200
+2021-06-02 09:44:00.197 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40518 - "DELETE /api/messages/me/1 HTTP/1.0" 403
+2021-06-02 09:44:00.207 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40520 - "DELETE /api/messages/me/1 HTTP/1.0" 403
+2021-06-02 09:44:00.224 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40522 - "PATCH /api/messages/1 HTTP/1.0" 200
+2021-06-02 09:44:00.237 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40524 - "PATCH /api/messages/1 HTTP/1.0" 403
+2021-06-02 09:44:00.246 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40526 - "PATCH /api/messages/1 HTTP/1.0" 422
+2021-06-02 09:44:00.257 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40528 - "PATCH /api/messages/1 HTTP/1.0" 422
+2021-06-02 09:44:00.269 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40530 - "PATCH /api/messages/2 HTTP/1.0" 404
+2021-06-02 09:44:00.286 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40532 - "PATCH /api/messages/2 HTTP/1.0" 404
+2021-06-02 09:44:00.297 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40534 - "PATCH /api/messages/2 HTTP/1.0" 422
+2021-06-02 09:44:00.307 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40536 - "PATCH /api/messages/2 HTTP/1.0" 422
+2021-06-02 09:44:00.318 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40538 - "DELETE /api/messages/2 HTTP/1.0" 404
+2021-06-02 09:44:00.329 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40540 - "DELETE /api/messages/2 HTTP/1.0" 404
+2021-06-02 09:44:00.340 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40542 - "DELETE /api/messages/1 HTTP/1.0" 403
+2021-06-02 09:44:00.353 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40544 - "DELETE /api/messages/1 HTTP/1.0" 200
+2021-06-02 09:44:00.372 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40546 - "PATCH /api/permissions/modify HTTP/1.0" 200
+2021-06-02 09:44:00.386 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40548 - "PATCH /api/permissions/modify HTTP/1.0" 403
+2021-06-02 09:44:00.398 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40550 - "PATCH /api/permissions/modify HTTP/1.0" 422
+2021-06-02 09:44:00.408 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40552 - "PATCH /api/permissions/modify HTTP/1.0" 422
+2021-06-02 09:44:00.424 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40554 - "PATCH /api/permissions/modify HTTP/1.0" 404
+2021-06-02 09:44:00.437 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40556 - "PATCH /api/permissions/modify HTTP/1.0" 404
+2021-06-02 09:44:00.450 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40558 - "PATCH /api/permissions/modify HTTP/1.0" 404
+2021-06-02 09:44:00.460 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40560 - "PATCH /api/permissions/modify HTTP/1.0" 404
+2021-06-02 09:44:00.475 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40562 - "PATCH /api/permissions/modify HTTP/1.0" 404
+2021-06-02 09:44:00.488 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40564 - "PATCH /api/permissions/modify HTTP/1.0" 404
+2021-06-02 09:44:00.501 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40566 - "PATCH /api/permissions/modify HTTP/1.0" 403
+2021-06-02 09:44:00.513 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40568 - "PATCH /api/permissions/modify HTTP/1.0" 403
+2021-06-02 09:44:00.524 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40570 - "PATCH /api/permissions/modify HTTP/1.0" 403
+2021-06-02 09:44:00.537 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40572 - "PATCH /api/permissions/modify HTTP/1.0" 403
+2021-06-02 09:44:00.550 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40574 - "PATCH /api/permissions/modify HTTP/1.0" 403
+2021-06-02 09:44:00.564 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40576 - "PATCH /api/permissions/modify HTTP/1.0" 403
+2021-06-02 09:44:01.664 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40586 - "GET /docs HTTP/1.0" 200
+2021-06-02 09:44:01.868 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40588 - "GET /openapi.json HTTP/1.0" 200
+2021-06-02 09:45:00.301 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40590 - "GET /docs HTTP/1.0" 200
+2021-06-02 09:45:00.447 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40592 - "GET /openapi.json HTTP/1.0" 200
+2021-06-02 09:47:22.956 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40622 - "GET /docs HTTP/1.0" 200
+2021-06-02 09:47:23.121 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40624 - "GET /openapi.json HTTP/1.0" 200
+2021-06-02 09:49:28.515 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40638 - "POST /api/auth/login HTTP/1.0" 200
+2021-06-02 09:49:37.842 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40646 - "POST /api/auth/login HTTP/1.0" 200
+2021-06-02 09:49:49.221 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40652 - "POST /api/auth/login HTTP/1.0" 200
+2021-06-02 09:54:03.877 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40658 - "POST /api/auth HTTP/1.0" 400
+2021-06-02 09:54:11.130 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.18.0.3:40664 - "POST /api/auth HTTP/1.0" 201
+2021-06-02 10:49:00.732 | INFO     | uvicorn.server:shutdown:239 - Shutting down
+2021-06-02 10:49:00.836 | INFO     | uvicorn.lifespan.on:shutdown:43 - Waiting for application shutdown.
+2021-06-02 10:49:00.837 | INFO     | src.main:stop_app:42 - Closing connection to database
+2021-06-02 10:49:00.838 | INFO     | src.main:stop_app:44 - Connection closed
+2021-06-02 10:49:00.839 | INFO     | uvicorn.lifespan.on:shutdown:46 - Application shutdown complete.
+2021-06-02 10:49:00.840 | INFO     | uvicorn.server:serve:74 - Finished server process [1]
+2021-06-02 10:53:55.235 | INFO     | uvicorn.server:serve:64 - Started server process [1]
+2021-06-02 10:53:55.237 | INFO     | uvicorn.lifespan.on:startup:26 - Waiting for application startup.
+2021-06-02 10:53:55.238 | INFO     | src.main:start_app:30 - Connecting to database
+2021-06-02 10:53:55.247 | ERROR    | uvicorn.lifespan.on:send:89 - Traceback (most recent call last):
+  File "/usr/local/lib/python3.9/site-packages/starlette/routing.py", line 540, in lifespan
+    async for item in self.lifespan_context(app):
+  File "/usr/local/lib/python3.9/site-packages/starlette/routing.py", line 481, in default_lifespan
+    await self.startup()
+  File "/usr/local/lib/python3.9/site-packages/starlette/routing.py", line 516, in startup
+    await handler()
+  File "./src/main.py", line 31, in start_app
+    app.state.pool = await create_pool(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 407, in _async__init__
+    await self._initialize()
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 435, in _initialize
+    await first_ch.connect()
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 127, in connect
+    self._con = await self._pool._get_new_connection()
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/pool.py", line 477, in _get_new_connection
+    con = await connection.connect(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connection.py", line 1980, in connect
+    return await connect_utils._connect(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connect_utils.py", line 661, in _connect
+    con = await _connect_addr(
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/connect_utils.py", line 640, in _connect_addr
+    await compat.wait_for(connected, timeout=timeout)
+  File "/usr/local/lib/python3.9/site-packages/asyncpg/compat.py", line 103, in wait_for
+    return await asyncio.wait_for(fut, timeout)
+  File "/usr/local/lib/python3.9/asyncio/tasks.py", line 481, in wait_for
+    return fut.result()
+asyncpg.exceptions.InvalidPasswordError: password authentication failed for user "admin"
+
+2021-06-02 10:53:55.248 | ERROR    | uvicorn.lifespan.on:startup:35 - Application startup failed. Exiting.
+2021-06-02 11:03:30.399 | INFO     | uvicorn.server:serve:64 - Started server process [1]
+2021-06-02 11:03:30.400 | INFO     | uvicorn.lifespan.on:startup:26 - Waiting for application startup.
+2021-06-02 11:03:30.401 | INFO     | src.main:start_app:30 - Connecting to database
+2021-06-02 11:03:30.545 | INFO     | src.main:start_app:36 - Connection established
+2021-06-02 11:03:30.547 | INFO     | uvicorn.lifespan.on:startup:38 - Application startup complete.
+2021-06-02 11:03:30.551 | INFO     | uvicorn.server:_log_started_message:199 - Uvicorn running on http://app:8080 (Press CTRL+C to quit)
+2021-06-02 11:03:59.969 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.27.0.3:36706 - "GET /docs HTTP/1.0" 200
+2021-06-02 11:04:00.180 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 172.27.0.3:36708 - "GET /openapi.json HTTP/1.0" 200
+2021-06-02 11:04:49.625 | INFO     | uvicorn.server:shutdown:239 - Shutting down
+2021-06-02 11:04:49.727 | INFO     | uvicorn.lifespan.on:shutdown:43 - Waiting for application shutdown.
+2021-06-02 11:04:49.728 | INFO     | src.main:stop_app:42 - Closing connection to database
+2021-06-02 11:04:49.732 | INFO     | src.main:stop_app:44 - Connection closed
+2021-06-02 11:04:49.734 | INFO     | uvicorn.lifespan.on:shutdown:46 - Application shutdown complete.
+2021-06-02 11:04:49.735 | INFO     | uvicorn.server:serve:74 - Finished server process [1]
+2021-06-02 11:22:42.017 | INFO     | uvicorn.server:serve:64 - Started server process [1]
+2021-06-02 11:22:42.018 | INFO     | uvicorn.lifespan.on:startup:26 - Waiting for application startup.
+2021-06-02 11:22:42.019 | INFO     | src.main:start_app:30 - Connecting to database
+2021-06-02 11:22:42.160 | INFO     | src.main:start_app:36 - Connection established
+2021-06-02 11:22:42.161 | INFO     | uvicorn.lifespan.on:startup:38 - Application startup complete.
+2021-06-02 11:22:42.163 | INFO     | uvicorn.server:_log_started_message:199 - Uvicorn running on http://alertifa_python:8080 (Press CTRL+C to quit)
+2021-06-02 11:23:06.617 | INFO     | uvicorn.server:shutdown:239 - Shutting down
+2021-06-02 11:23:06.723 | INFO     | uvicorn.lifespan.on:shutdown:43 - Waiting for application shutdown.
+2021-06-02 11:23:06.724 | INFO     | src.main:stop_app:42 - Closing connection to database
+2021-06-02 11:23:06.727 | INFO     | src.main:stop_app:44 - Connection closed
+2021-06-02 11:23:06.728 | INFO     | uvicorn.lifespan.on:shutdown:46 - Application shutdown complete.
+2021-06-02 11:23:06.729 | INFO     | uvicorn.server:serve:74 - Finished server process [1]
+2021-06-02 11:23:40.864 | INFO     | uvicorn.server:serve:64 - Started server process [1]
+2021-06-02 11:23:40.865 | INFO     | uvicorn.lifespan.on:startup:26 - Waiting for application startup.
+2021-06-02 11:23:40.866 | INFO     | src.main:start_app:30 - Connecting to database
+2021-06-02 11:23:41.013 | INFO     | src.main:start_app:36 - Connection established
+2021-06-02 11:23:41.014 | INFO     | uvicorn.lifespan.on:startup:38 - Application startup complete.
+2021-06-02 11:23:41.016 | INFO     | uvicorn.server:_log_started_message:199 - Uvicorn running on http://alertifa_python:8080 (Press CTRL+C to quit)
+2021-06-02 11:23:50.348 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 192.168.176.3:60848 - "GET /docs HTTP/1.0" 200
+2021-06-02 11:23:50.525 | INFO     | uvicorn.protocols.http.h11_impl:send:461 - 192.168.176.3:60850 - "GET /openapi.json HTTP/1.0" 200
+2021-06-02 11:24:04.146 | INFO     | uvicorn.server:shutdown:239 - Shutting down
+2021-06-02 11:24:04.251 | INFO     | uvicorn.lifespan.on:shutdown:43 - Waiting for application shutdown.
+2021-06-02 11:24:04.252 | INFO     | src.main:stop_app:42 - Closing connection to database
+2021-06-02 11:24:04.256 | INFO     | src.main:stop_app:44 - Connection closed
+2021-06-02 11:24:04.257 | INFO     | uvicorn.lifespan.on:shutdown:46 - Application shutdown complete.
+2021-06-02 11:24:04.258 | INFO     | uvicorn.server:serve:74 - Finished server process [1]

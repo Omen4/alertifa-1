@@ -1,8 +1,9 @@
 version: '3.7'
 services:
-    nginx:
+    proxy:
+        container_name: alertifa_nginx
+        image: alertifa_nginx:v0.0.1
         build: ./nginx/.
-        container_name: nginx
         volumes:
             - ./nginx/letsencrypt:/etc/letsencrypt:ro
             - ./logs/nginx:/var/log/nginx:rw
@@ -12,18 +13,19 @@ services:
             # - "80:80"
             # - "443:443"
         networks: 
-            - frontend
-            - backend
+            - frontnet
+            - backnet
         depends_on: 
-            - python
+            - app
 
-    postgres:
-        container_name: db
+    db:
+        container_name: alertifa_postgres
+        image: alertifa_postgres:v0.0.1
         build: ./database/.
         volumes:
             - ./database/pgdata:/var/lib/postgresql/pgdata:rw
-            - ./database/postgresql.conf:/etc/postgresql/postgresql.conf:ro
-            - ./database/pg_hba.conf:/etc/postgresql/pg_hba.conf:ro
+            - ./database/postgresql.conf:/var/lib/postgresql/pgdata/postgresql.conf:rw
+            - ./database/pg_hba.conf:/var/lib/postgresql/pgdata/pg_hba.conf:rw
             - ./logs/database:/var/lib/postgresql/data:rw
         env_file:
             - ./database/.env
@@ -33,57 +35,58 @@ services:
         networks:
             - dbnet
 
-    db_init:
-        container_name: db_init
-        build: ./database_init/.
-        networks: 
-            - dbnet
-        depends_on: 
-            - postgres
-    db_populate:
-        container_name: db_populate
-        build: ./database_populate/.
-        networks: 
-            - dbnet
-        depends_on: 
-            - db_init
+    # db_init:
+    #     container_name: db_init
+    #     build: ./database_init/.
+    #     networks: 
+    #         - dbnet
+    #     depends_on: 
+    #         - postgres
+    # db_populate:
+    #     container_name: db_populate
+    #     build: ./database_populate/.
+    #     networks: 
+    #         - dbnet
+    #     depends_on: 
+    #         - db_init
 
-    python:
-        container_name: app
+    app:
+        container_name: alertifa_python
+        image: alertifa_python:v0.0.1
         build: ./app/.
         env_file:
             - ./app/.env
         volumes:
             - ./logs:/logs:rw
         networks: 
-            - backend
+            - backnet
             - dbnet
         depends_on:
-            # - postgres
-            - db_populate
+            - db
+            # - db_populate
 
-    unit_test_account:
-        container_name: unit_test_account
-        build: ./unit_test/account/.
-        networks: 
-            - frontend
-            - backend
-        depends_on:
-            - nginx
-    unit_test_permissions:
-        container_name: unit_test_permissions
-        build: ./unit_test/permissions/.
-        networks: 
-            - frontend
-            - dbnet
-        depends_on: 
-            - unit_test_account
+    # unit_test_account:
+    #     container_name: unit_test_account
+    #     build: ./unit_test/account/.
+    #     networks: 
+    #         - frontend
+    #         - backend
+    #     depends_on:
+    #         - nginx
+    # unit_test_permissions:
+    #     container_name: unit_test_permissions
+    #     build: ./unit_test/permissions/.
+    #     networks: 
+    #         - frontend
+    #         - dbnet
+    #     depends_on: 
+    #         - unit_test_account
 
 networks:
-    frontend:
-        name: frontend
-    backend:
-        name: backend
+    frontnet:
+        name: frontnet
+    backnet:
+        name: backnet
     dbnet:
         name: dbnet
         ipam:

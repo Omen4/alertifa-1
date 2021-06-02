@@ -10,8 +10,7 @@ SUCCESS = "\033[32;1;1mSUCCESS\033[0m"
 FAILED = "\033[31;1;1mFAILED\033[0m"
 # BASE_URL = "http://127.0.0.1:8000/api"
 requests.packages.urllib3.disable_warnings()
-BASE_URL = "https://nginx/api"
-# BASE_URL = "https://kubernetes.docker.internal/api"
+BASE_URL = "https://alertifa_nginx/api"
 
 session = requests.Session()
 session.verify = False

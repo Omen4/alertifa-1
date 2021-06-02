@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 import requests
-import socket
-import sys
-# import subprocess
 # from pathlib import Path
 
 
@@ -13,8 +10,8 @@ FAILED = "\033[31;1;1mFAILED\033[0m"
 # BASE_URL = "https://ascript-valency.com/api"
 # BASE_URL = "https://kubernetes.docker.internal/api"
 requests.packages.urllib3.disable_warnings()
-host = socket.gethostbyname("nginx")
-BASE_URL = f"https://{host}/api"
+
+BASE_URL = f"https://alertifa_proxy/api"
 # fake_cert = Path(__file__).parent.parent / "nginx" / "letsencrypt" / "nginx-selfsigned.crt"
 # print(fake_cert)
 
@@ -174,7 +171,8 @@ else:
     print(message.format(SUCCESS))
 
 ###  VALID LOGIN ###
-url = f"{BASE_URL}/auth/login"
+url = "https://127.0.0.1/auth/login"
+# url = f"{BASE_URL}/auth/login"
 params = {
     "user": {
         "email": "yulquen@protonmail.com",
