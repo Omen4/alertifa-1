@@ -5,7 +5,7 @@ services:
         image: alertifa_nginx:${VERSION}
         build: ./nginx/.
         volumes:
-            - ./nginx/letsencrypt:/etc/letsencrypt:ro
+            - ${LETSENCRYPT}:/etc/letsencrypt:ro
             - ./logs/nginx:/var/log/nginx:rw
         ports:
             - ${NGINX_BIND_ADDRESS}:80:80
