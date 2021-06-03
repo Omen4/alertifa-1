@@ -15,11 +15,11 @@ services:
         depends_on: 
             - app
         environment: 
-            SERVER_NAME: $SERVER_NAME
-            SSL_CERTIFICATE: $SSL_CERTIFICATE
-            SSL_CERTIFICATE_KEY: $SSL_CERTIFICATE_KEY
-            INCLUDE: $INCLUDE
-            SSL_DHPARAM: $SSL_DHPARAM
+            SERVER_NAME: ${SERVER_NAME}
+            SSL_CERTIFICATE: ${SSL_CERTIFICATE}
+            SSL_CERTIFICATE_KEY: ${SSL_CERTIFICATE_KEY}
+            INCLUDE: ${INCLUDE}
+            SSL_DHPARAM: ${SSL_DHPARAM}
 
     db:
         container_name: alertifa_postgres
@@ -31,29 +31,29 @@ services:
         networks: 
             - dbnet
         environment: 
-            POSTGRES_PASSWORD: UmptKgehOxrO
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
 
     app:
         container_name: alertifa_python
         image: alertifa_python:${VERSION}
         build: ./app/.
         volumes:
-            - ./logs:/logs:rw
+            - ./logs/app:/logs:rw
         networks: 
             - backnet
             - dbnet
         depends_on:
             - db
         environment: 
-            DB_CONNECTION: $DB_CONNECTION
-            SECRET_KEY: $SECRET_KEY
-            ALGORITHM: $ALGORITHM
-            AUTH_HEADER: $AUTH_HEADER
-            AUTH_SCHEME: $AUTH_SCHEME
-            PROJECT_NAME: $PROJECT_NAME
-            MAX_CONNECTIONS_COUNT: $MAX_CONNECTIONS_COUNT
-            MIN_CONNECTIONS_COUNT: $MIN_CONNECTIONS_COUNT
-            VERSION: $VERSION
+            DB_CONNECTION: ${DB_CONNECTION}
+            SECRET_KEY: ${SECRET_KEY}
+            ALGORITHM: ${ALGORITHM}
+            AUTH_HEADER: ${AUTH_HEADER}
+            AUTH_SCHEME: ${AUTH_SCHEME}
+            PROJECT_NAME: ${PROJECT_NAME}
+            MAX_CONNECTIONS_COUNT: ${MAX_CONNECTIONS_COUNT}
+            MIN_CONNECTIONS_COUNT: ${MIN_CONNECTIONS_COUNT}
+            VERSION: ${VERSION}
 
 networks:
     backnet:

@@ -140,9 +140,8 @@ RUN sed -ri "s!^#?(listen_addresses)\s*=\s*\S+.*!\1 = '*'!" /usr/local/share/pos
 
 RUN mkdir -p /var/run/postgresql && chown -R postgres:postgres /var/run/postgresql && chmod 2777 /var/run/postgresql
 
-# ENV PGDATA /etc/postgresql/13/main
+#######################################################################################################################################
 ENV PGDATA /var/lib/postgresql
-# this 777 will be replaced by 700 at runtime (allows semi-arbitrary "--user" values)
 RUN mkdir -p "$PGDATA/data"
 COPY ./postgresql.conf "$PGDATA/postgresql.conf"
 COPY ./pg_hba.conf "$PGDATA/pg_hba.conf"
@@ -151,6 +150,7 @@ RUN chown -R postgres:postgres "$PGDATA" && chmod 700 "$PGDATA"
 RUN chmod 644 "$PGDATA/postgresql.conf" && chmod 640 "$PGDATA/pg_hba.conf" && chmod 640 "$PGDATA/pg_ident.conf"
 RUN mkdir "$PGDATA/logs"
 RUN chown -R postgres:postgres "$PGDATA/logs" && chmod 700 "$PGDATA/logs"
+#######################################################################################################################################
 
 COPY ./docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
