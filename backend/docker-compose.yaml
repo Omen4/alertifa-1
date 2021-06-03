@@ -28,17 +28,15 @@ services:
         volumes:
             - ./database/pgdata:/var/lib/postgresql/data:rw
             - ./logs/database:/var/lib/postgresql/logs:rw
-        environment: 
-            POSTGRES_PASSWORD: UmptKgehOxrO
         networks: 
             - dbnet
+        environment: 
+            POSTGRES_PASSWORD: UmptKgehOxrO
 
     app:
         container_name: alertifa_python
         image: alertifa_python:${VERSION}
         build: ./app/.
-        env_file:
-            - ./app/.env
         volumes:
             - ./logs:/logs:rw
         networks: 
@@ -46,6 +44,16 @@ services:
             - dbnet
         depends_on:
             - db
+        environment: 
+            DB_CONNECTION: $DB_CONNECTION
+            SECRET_KEY: $SECRET_KEY
+            ALGORITHM: $ALGORITHM
+            AUTH_HEADER: $AUTH_HEADER
+            AUTH_SCHEME: $AUTH_SCHEME
+            PROJECT_NAME: $PROJECT_NAME
+            MAX_CONNECTIONS_COUNT: $MAX_CONNECTIONS_COUNT
+            MIN_CONNECTIONS_COUNT: $MIN_CONNECTIONS_COUNT
+            VERSION: $VERSION
 
 networks:
     backnet:

@@ -12,10 +12,10 @@ from .utils.logging import InterceptHandler
 
 API_PREFIX = "/api"
 
-VERSION = "0.0.0"
 
-config = Config("./src/.env")
+config = Config(".env")
 
+VERSION: str = config("DEBUG", cast=str, default="v0.0.1")
 DEBUG: bool = config("DEBUG", cast=bool, default=False)
 
 DATABASE_URL: DatabaseURL = config("DB_CONNECTION", cast=DatabaseURL)
@@ -36,7 +36,6 @@ ALLOWED_HOSTS: List[str] = config(
 )
 
 # logging configuration
-
 LOGGING_LEVEL = logging.DEBUG if DEBUG else logging.INFO
 LOGGERS = ("uvicorn.asgi", "uvicorn.access")
 
