@@ -209,7 +209,8 @@ docker_setup_env() {
 
 	declare -g DATABASE_ALREADY_EXISTS
 	# look specifically for PG_VERSION, as it is expected in the DB dir
-	if [ -s "$PGDATA/PG_VERSION" ]; then
+	if [ -s "$PGDATA/data/PG_VERSION" ]; then
+		echo "$PGDATA"
 		DATABASE_ALREADY_EXISTS='true'
 	fi
 }
@@ -274,6 +275,7 @@ _main() {
 
 	if [ "$1" = 'postgres' ] && ! _pg_want_help "$@"; then
 		docker_setup_env
+
 		# setup data directories and permissions (when run as root)
 		docker_create_db_directories
 		if [ "$(id -u)" = '0' ]; then

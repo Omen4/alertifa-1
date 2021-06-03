@@ -9,3 +9,5 @@ _dependencies
 .stignore
 logs/
 node_modules/
+.env
+letsencrypt/
