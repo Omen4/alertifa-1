@@ -86,7 +86,7 @@ async def delete_message(
     await messageDao.delete(message_id=message_id)
 
 
-@router.get("/{message_id}", name="messages:read-message", status_code=200)
+@router.get("/{message_id}", name="messages:read-message", response_model=MessageInResponse, status_code=200)
 async def read_message(
     message_id: int,
     user: UserJWT = Depends(verify_token),
